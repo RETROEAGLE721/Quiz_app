@@ -1,5 +1,3 @@
-from functools import partial
-from django.shortcuts import render
 from rest_framework.status import *
 from rest_framework.views  import APIView
 from rest_framework.response import Response
@@ -24,26 +22,25 @@ class user_login(APIView):
     def get(self,request):
         try:
             if not request.data:
-                return Response({"Exception":"Please post name and password."},status=HTTP_428_PRECONDITION_REQUIRED)
+                return Response({"status_code":428,"Exception":"Please post name and password."},status=HTTP_428_PRECONDITION_REQUIRED)
             try:
                 login_details = Users.objects.get(name=request.data['name'],passw=request.data['passw'])
             
             except:
-                return Response({"No user found":"No such user details found"},status=HTTP_404_NOT_FOUND)
+                return Response({"status_code":404,"No user found":"No such user details found"},status=HTTP_404_NOT_FOUND)
             login_details = UsersSerializer(login_details)
-            return Response(login_details.data,status=HTTP_200_OK)
+            return Response({"status_code":200,"Data":login_details.data},status=HTTP_200_OK)
         except:
-            return Response({"Exception":"invalid parameter request"},status=HTTP_404_NOT_FOUND)
+            return Response({"status_code":404,"Exception":"invalid parameter request"},status=HTTP_404_NOT_FOUND)
             
             
     
     def post(self,request):
-        new_data = Users.objects.create(name=request.data['name'],passw=request.data['passw'])
-        new_data = UsersSerializer(data=new_data)
+        new_data = UsersSerializer(data=request.data)
         if new_data.is_valid():
             new_data.save()
-            return Response(new_data.data,status=HTTP_200_OK)
-        return Response({"Exception" : "Incorrent formate"},status=HTTP_406_NOT_ACCEPTABLE)
+            return Response({"status_code":200,"Data":new_data.data},status=HTTP_200_OK)
+        return Response({"status_code":406,"Exception" : "Incorrent formate"})
     
     
 

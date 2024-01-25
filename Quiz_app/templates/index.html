@@ -22,7 +22,14 @@
     </style>
 <body>
     <div class="container">
-        <label for="exampleInputEmail1" id="text" class="form-label">30 MCQs Test</label>
+        
+        <label for="exampleInputEmail1" id="text" class="form-label">
+            {{ request.session.user_name }}
+            <!-- {% if user_name in request.session.keys %} -->
+                <br>
+            <!-- {% endif %} -->
+            30 MCQs Test
+        </label>
     <div class="text-center">
         <form action="load_page" method="post">
             {% csrf_token %}

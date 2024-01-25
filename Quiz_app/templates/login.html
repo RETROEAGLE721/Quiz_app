@@ -31,10 +31,10 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">SignUp</button>
             </form>
+            {% if info != "" %}
+            {{ info }}
+            {% endif %}
         </div>
-        {% if info != "" %}
-        {{ info }}
-        {% endif %}
     </form>
 </body>
 

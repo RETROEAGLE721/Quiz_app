@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render
 import requests
 
 
-def load_login(request):
-    return render(request, 'login.html')
+def load_login(request,info=""):
+    print(info)
+    return render(request, 'login.html', {'info':info})
 
 def load_Signup(request):
     return render(request, 'signup.html')
@@ -27,6 +28,9 @@ def save_details(request):
     return render(request, 'index.html')
 
 def check_details(request):
-    user_details = requests.get("http://127.0.0.1:8000/user_login",data={"name":request.POST.get('name'),"passw":request.POST.get('passw')})
-    print(user_details.json())
-    return redirect('index')
+    user_details = requests.get("http://127.0.0.1:8000/user_login",data={"name":request.POST.get('name'),"passw":request.POST.get('passw')}).json()
+    if user_details['status_code'] == 200:
+        request.session['user_name'] = user_details['Data']['name']
+        print(request.session.get('user_name'))
+        return redirect('index')
+    return render(request, 'login.html',{'info':"Invalid details please try again"})

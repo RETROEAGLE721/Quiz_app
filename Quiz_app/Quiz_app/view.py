@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, render
+from pprint import pprint
 import requests
+
 
 
 def load_login(request,info=""):
@@ -16,7 +18,9 @@ def load_page(request):
     if request.POST.get('submit') == 'Log out':
         return redirect('load_login')
     elif request.POST.get('submit') == 'start':
-        return redirect('load_Signup')
+        user_details =  requests.get("http://127.0.0.1:8000/mcq_data")
+        pprint(user_details.json())
+        return render(request,'load_mcqs.html',{'all_mcq':user_details.json(),'count':0})
     else:    
         return redirect('index')
         

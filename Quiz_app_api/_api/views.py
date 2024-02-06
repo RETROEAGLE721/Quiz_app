@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from .models import *
 from .serializer import *
 
-
 # Create your views here.
 class mcq_data(APIView):
     
@@ -14,10 +13,16 @@ class mcq_data(APIView):
         mcq_data = mcqsSerializer(mcq_data,many=True)
         return Response(mcq_data.data,status=HTTP_200_OK)
 
+    def post(self,request):
+        user_data = user_outputSerializer(data=request.data)
+        if user_data.is_valid():
+            user_data.save()
+            return Response({"status_code":200,"Data":user_data.data},status=HTTP_200_OK)
+        return Response({"status_code":406,"Exception" : "Incorrent formate"})
+    
 
 
 class user_login(APIView):
-    
     
     def get(self,request):
         try:

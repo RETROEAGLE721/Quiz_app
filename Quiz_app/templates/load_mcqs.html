@@ -5,22 +5,26 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>MCQs</title>
 </head>
+<style>
+    .container{
+        margin-bottom: 10%;
+    }
+</style>
 <body>
     <div class="container">
-        <form action="" method="post">
+        <form action="user_answer" method="post">
             {% csrf_token %}
         {% for x in all_mcq %}
-        {{ count }}.
+        {{ forloop.counter }}.
         {{ x.question }}
-        <br><br><input type="radio" name="{{ count }}" id="" required>{{ x.option_A }}
-        <br><br><input type="radio" name="{{ count }}" id="" required>{{ x.option_B }}
-        <br><br><input type="radio" name="{{ count }}" id="" required>{{ x.option_C }}
-        <br><br><input type="radio" name="{{ count }}" id="" required>{{ x.option_D }}
-        <br><br><div id="divCheckbox" style="display: none;" name="ans" value="{{ answer }}"></div>
+        <br><br><input type="radio" name="{{ forloop.counter }}" value="A" required>{{ x.option_A }}
+        <br><br><input type="radio" name="{{ forloop.counter }}" value="B" required>{{ x.option_B }}
+        <br><br><input type="radio" name="{{ forloop.counter }}" value="C" required>{{ x.option_C }}
+        <br><br><input type="radio" name="{{ forloop.counter }}" value="D" required>{{ x.option_D }}
         <br><br>
-        {{ count = forloop.counter }}
         {% endfor %}
-        <br><button class="btn btn-outline-success" type="submit">Submit</button>
+        <button class="btn btn-outline-success" type="submit">Submit</button>
+        <br><br>
     </form>
 </div>
 </body>
